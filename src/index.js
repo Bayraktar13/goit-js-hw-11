@@ -7,34 +7,20 @@ const loadMoreBtnEl = document.querySelector('.js-load-more');
 
 const unsplashApi = new UnsplashApi();
 
-// unsplashApi
-//   .fetchPhotos()
-//   .then(data => {
-//     console.log(data);
-//     const { total, totalHits, hits } = data.data;
-//     const galleryMarkup = makeGalleryCard(hits);
-//     galleryListEl.innerHTML = galleryMarkup;
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-
 const onLoadMoreBtnElClick = event => {
   unsplashApi.page += 1;
   unsplashApi
     .fetchPhotos()
     .then(data => {
-      const { total, totalHits, hits } = data.data;
+      const { totalHits, hits } = data.data;
+      unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
       const galleryMarkup = makeGalleryCard(hits);
       galleryListEl.insertAdjacentHTML('beforeend', galleryMarkup);
+      checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
     })
     .catch(err => {
       console.log(err);
     });
-//   if (this.page * this.perPage >= total) {
-//     loadMoreBtnEl.classList.add('is-hidden');
-//     loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnElClick);
-//   }
 };
 
 const onSearchFormElSubmit = event => {
@@ -45,15 +31,24 @@ const onSearchFormElSubmit = event => {
     .fetchPhotos()
     .then(data => {
       console.log(data);
-      const { total, totalHits, hits } = data.data;
+      const { totalHits, hits } = data.data;
+      unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
       const galleryMarkup = makeGalleryCard(hits);
       galleryListEl.innerHTML = galleryMarkup;
       loadMoreBtnEl.classList.remove('is-hidden');
       loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
+      checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
     })
     .catch(err => {
       console.log(err);
     });
+};
+
+const checkLoadMoreButtonVisibility = () => {
+  if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
+    loadMoreBtnEl.classList.add('is-hidden');
+    loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnElClick);
+  }
 };
 
 searchFormEl.addEventListener('submit', onSearchFormElSubmit);

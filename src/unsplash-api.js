@@ -8,6 +8,7 @@ export class UnsplashApi {
     this.searchQuery = '';
     this.page = 1;
     this.perPage = 40;
+    this.totalHits = 0;
   }
 
   fetchPhotos() {
