@@ -4,6 +4,7 @@ import { UnsplashApi } from './unsplash-api';
 const galleryListEl = document.querySelector('.gallery');
 const searchFormEl = document.querySelector('.search-form');
 const loadMoreBtnEl = document.querySelector('.js-load-more');
+const messageEl = document.querySelector('.message');
 
 const unsplashApi = new UnsplashApi();
 
@@ -48,7 +49,13 @@ const checkLoadMoreButtonVisibility = () => {
   if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
     loadMoreBtnEl.classList.add('is-hidden');
     loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnElClick);
+    showMessage("We are sorry, but you've reached the end of search results.");
   }
+};
+
+const showMessage = message => {
+  messageEl.textContent = message;
+  messageEl.classList.remove('is-hidden');
 };
 
 searchFormEl.addEventListener('submit', onSearchFormElSubmit);
