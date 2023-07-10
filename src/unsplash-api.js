@@ -1,5 +1,6 @@
 'use strict';
 import axios from 'axios';
+
 export class UnsplashApi {
   #BASE_URL = 'https://pixabay.com/api/';
   #API_KEY = '35727926-793d053d212c7893a5cbfbadb';
