@@ -8,41 +8,74 @@ const messageEl = document.querySelector('.message');
 
 const unsplashApi = new UnsplashApi();
 
-const onLoadMoreBtnElClick = event => {
-  unsplashApi.page += 1;
-  unsplashApi
-    .fetchPhotos()
-    .then(data => {
-      const { totalHits, hits } = data.data;
-      unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
-      const galleryMarkup = makeGalleryCard(hits);
-      galleryListEl.insertAdjacentHTML('beforeend', galleryMarkup);
-      checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
-    })
-    .catch(err => {
-      console.log(err);
-    });
+const onLoadMoreBtnElClick = async event => {
+  // Делаю через async/await/try (onLoadMoreBtnElClick объявлена как async). Внизу скрипт через fetch/then.
+  try {
+    unsplashApi.page += 1;
+    const data = await unsplashApi.fetchPhotos();
+    const { totalHits, hits } = data.data;
+    unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
+    const galleryMarkup = makeGalleryCard(hits);
+    galleryListEl.insertAdjacentHTML('beforeend', galleryMarkup);
+    checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+  } catch (err) {
+    console.log(err);
+  }
+
+  // Делаю через then/.catch
+  //
+  // unsplashApi.page += 1;
+  // unsplashApi
+  //   .fetchPhotos()
+  //   .then(data => {
+  //     const { totalHits, hits } = data.data;
+  //     unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
+  //     const galleryMarkup = makeGalleryCard(hits);
+  //     galleryListEl.insertAdjacentHTML('beforeend', galleryMarkup);
+  //     checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
 };
 
-const onSearchFormElSubmit = event => {
+const onSearchFormElSubmit = async event => {
   event.preventDefault();
   const searchQuery = event.currentTarget.elements.searchQuery.value;
   unsplashApi.searchQuery = searchQuery;
-  unsplashApi
-    .fetchPhotos()
-    .then(data => {
-      console.log(data);
-      const { totalHits, hits } = data.data;
-      unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
-      const galleryMarkup = makeGalleryCard(hits);
-      galleryListEl.innerHTML = galleryMarkup;
-      loadMoreBtnEl.classList.remove('is-hidden');
-      loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
-      checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  // Делаю через async/await/try (onSearchFormElSubmit объявлена как async). Внизу скрипт через fetch/then.
+  try {
+    const data = await unsplashApi.fetchPhotos();
+    console.log(data);
+    const { totalHits, hits } = data.data;
+    unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
+    const galleryMarkup = makeGalleryCard(hits);
+    galleryListEl.innerHTML = galleryMarkup;
+    loadMoreBtnEl.classList.remove('is-hidden');
+    loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
+    checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+    //
+  } catch (err) {
+    console.log(err);
+  }
+
+  // Делаю через then/.catch
+  //
+  //   unsplashApi
+  //     .fetchPhotos()
+  //     .then(data => {
+  //       console.log(data);
+  //       const { totalHits, hits } = data.data;
+  //       unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
+  //       const galleryMarkup = makeGalleryCard(hits);
+  //       galleryListEl.innerHTML = galleryMarkup;
+  //       loadMoreBtnEl.classList.remove('is-hidden');
+  //       loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
+  //       checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
 };
 
 const checkLoadMoreButtonVisibility = () => {
