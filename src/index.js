@@ -49,7 +49,8 @@ const onSearchFormElSubmit = async event => {
     const data = await unsplashApi.fetchPhotos();
     console.log(data);
     const { totalHits, hits } = data.data;
-    unsplashApi.totalHits = totalHits; // Обновляем общее количество результатов
+    unsplashApi.totalHits = totalHits;
+    galleryListEl.innerHTML = '';
     const galleryMarkup = makeGalleryCard(hits);
     galleryListEl.innerHTML = galleryMarkup;
     loadMoreBtnEl.classList.remove('is-hidden');
