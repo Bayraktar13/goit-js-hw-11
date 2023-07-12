@@ -9,7 +9,7 @@ const messageEl = document.querySelector('.message');
 const unsplashApi = new UnsplashApi();
 
 const onLoadMoreBtnElClick = async event => {
-  // Делаю через async/await/try (onLoadMoreBtnElClick объявлена как async). Внизу скрипт через fetch/then.
+  // Делаю через async/await/try (onLoadMoreBtnElClick объявлена как async). Внизу скрипт через then/.catch.
   try {
     unsplashApi.page += 1;
     const data = await unsplashApi.fetchPhotos();
@@ -18,6 +18,7 @@ const onLoadMoreBtnElClick = async event => {
     const galleryMarkup = makeGalleryCard(hits);
     galleryListEl.insertAdjacentHTML('beforeend', galleryMarkup);
     checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+    showMessage("We are sorry, but you've reached the end of search results.");
   } catch (err) {
     console.log(err);
   }
@@ -54,6 +55,7 @@ const onSearchFormElSubmit = async event => {
     loadMoreBtnEl.classList.remove('is-hidden');
     loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
     checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
+    messageEl.classList.add('is-hidden');
     //
   } catch (err) {
     console.log(err);
@@ -82,13 +84,14 @@ const checkLoadMoreButtonVisibility = () => {
   if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
     loadMoreBtnEl.classList.add('is-hidden');
     loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnElClick);
-    showMessage("We are sorry, but you've reached the end of search results.");
   }
 };
 
 const showMessage = message => {
-  messageEl.textContent = message;
-  messageEl.classList.remove('is-hidden');
+  if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
+    messageEl.textContent = message;
+    messageEl.classList.remove('is-hidden');
+  }
 };
 
 searchFormEl.addEventListener('submit', onSearchFormElSubmit);

@@ -121,11 +121,18 @@ ol {
 
 .info-item {
   color: #27ae60;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
- 
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .span {
- color: darkgreen; 
+  color: darkgreen;
   font-style: italic;
+}
+
+.info {
+  padding-left: 10px;;
+}
+
+.photo-card {
+  // border: solid red;
 }
