@@ -42,6 +42,10 @@ const onLoadMoreBtnElClick = async event => {
 
 const onSearchFormElSubmit = async event => {
   event.preventDefault();
+  console.log(unsplashApi.page);
+  galleryListEl.innerHTML = '';
+  unsplashApi.page = 1;
+  console.log(unsplashApi.page);
   const searchQuery = event.currentTarget.elements.searchQuery.value;
   unsplashApi.searchQuery = searchQuery;
   // Делаю через async/await/try (onSearchFormElSubmit объявлена как async). Внизу скрипт через fetch/then.
@@ -50,7 +54,6 @@ const onSearchFormElSubmit = async event => {
     console.log(data);
     const { totalHits, hits } = data.data;
     unsplashApi.totalHits = totalHits;
-    galleryListEl.innerHTML = '';
     const galleryMarkup = makeGalleryCard(hits);
     galleryListEl.innerHTML = galleryMarkup;
     loadMoreBtnEl.classList.remove('is-hidden');
