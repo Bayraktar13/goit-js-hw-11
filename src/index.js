@@ -58,8 +58,8 @@ const onSearchFormElSubmit = async event => {
     galleryListEl.innerHTML = galleryMarkup;
     loadMoreBtnEl.classList.remove('is-hidden');
     loadMoreBtnEl.addEventListener('click', onLoadMoreBtnElClick);
-    checkLoadMoreButtonVisibility(); // Проверяем видимость кнопки "Загрузить еще"
-    messageEl.classList.add('is-hidden');
+    checkLoadMoreButtonVisibility();
+    showMessage("We are sorry, but you've reached the end of search results.");
     //
   } catch (err) {
     console.log(err);
@@ -85,14 +85,20 @@ const onSearchFormElSubmit = async event => {
 };
 
 const checkLoadMoreButtonVisibility = () => {
-  if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
+  if (
+    unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits ||
+    hits.length === 0
+  ) {
     loadMoreBtnEl.classList.add('is-hidden');
     loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnElClick);
   }
 };
 
 const showMessage = message => {
-  if (unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits) {
+  if (
+    unsplashApi.page * unsplashApi.perPage >= unsplashApi.totalHits ||
+    hits.length === 0
+  ) {
     messageEl.textContent = message;
     messageEl.classList.remove('is-hidden');
   }
