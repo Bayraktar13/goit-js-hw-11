@@ -42,10 +42,9 @@ const onLoadMoreBtnElClick = async event => {
 
 const onSearchFormElSubmit = async event => {
   event.preventDefault();
-  console.log(unsplashApi.page);
+  messageEl.classList.add('is-hidden');
   galleryListEl.innerHTML = '';
   unsplashApi.page = 1;
-  console.log(unsplashApi.page);
   const searchQuery = event.currentTarget.elements.searchQuery.value;
   unsplashApi.searchQuery = searchQuery;
   // Делаю через async/await/try (onSearchFormElSubmit объявлена как async). Внизу скрипт через fetch/then.
