@@ -89,6 +89,13 @@ ol {
   text-align: center;
 }
 
+.found {
+  color: #27ae60;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
 .search-btn:hover,
 .search-btn:focus,
 .load-more:hover,
@@ -130,7 +137,7 @@ ol {
 }
 
 .info {
-  padding-left: 10px;;
+  padding-left: 10px;
 }
 
 .photo-card {

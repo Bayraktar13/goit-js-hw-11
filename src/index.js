@@ -5,6 +5,7 @@ const galleryListEl = document.querySelector('.gallery');
 const searchFormEl = document.querySelector('.search-form');
 const loadMoreBtnEl = document.querySelector('.js-load-more');
 const messageEl = document.querySelector('.message');
+const foundEl = document.querySelector('.found');
 
 const unsplashApi = new UnsplashApi();
 
@@ -52,6 +53,7 @@ const onSearchFormElSubmit = async event => {
     const data = await unsplashApi.fetchPhotos();
     console.log(data);
     const { totalHits, hits } = data.data;
+    foundMessage(totalHits);
     unsplashApi.totalHits = totalHits;
     const galleryMarkup = makeGalleryCard(hits);
     galleryListEl.innerHTML = galleryMarkup;
@@ -101,6 +103,12 @@ const showMessage = message => {
     messageEl.textContent = message;
     messageEl.classList.remove('is-hidden');
   }
+};
+
+const foundMessage = totalHits => {
+  const message = `Hooray! We found ${totalHits} images.`;
+  foundEl.textContent = message;
+  foundEl.classList.remove('is-hidden');
 };
 
 searchFormEl.addEventListener('submit', onSearchFormElSubmit);
